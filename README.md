@@ -1,2 +1,5 @@
 # CS5610_WiSp_MERN
-This repo is for my project for CS5610 at NEU.
+
+## Project URLs
+- Frontend [https://wisp-photo-gallery-map.ue.r.appspot.com]
+- Backend [https://api-dot-wisp-photo-gallery-map.ue.r.appspot.com]
