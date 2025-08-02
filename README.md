@@ -28,6 +28,20 @@ Photo gallery web application with location mapping capabilities.
 - User data successfully saving to MongoDB Atlas upon first login
 - Basic UI structure complete with placeholder pages, conditional upon being logged in
 
+### Screenshots
+
+### MongoDB Atlas - User Data Successfully Stored
+![MongoDB Users Collection](screenshots/mongodb-users.png)
+*Shows user data being successfully saved to MongoDB Atlas after Google login*
+
+### Frontend - Login State
+![Login Button](screenshots/login-page.png)
+*Homepage showing Google login button for unauthenticated users*
+
+### Frontend - Authenticated State  
+![Authenticated Dashboard](screenshots/authenticated.png)
+*Full navigation bar visible after successful login with Map, Upload, Profile links and user welcome message*
+
 ### Next Steps - Iteration 2
 - Implement photo upload and delete functionality + drag and drop
 - Add photo gallery/carousel display
