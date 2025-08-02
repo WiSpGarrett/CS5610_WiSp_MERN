@@ -9,3 +9,4 @@ build/
 # Environment variables
 .env
 */.env
+*/app.yaml
