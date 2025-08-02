@@ -1,8 +1,10 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import Login from './Login';
+import Logout from './Logout';
 
-function Navigation() {
+function Navigation({ user, setUser }) {
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -11,9 +13,28 @@ function Navigation() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link as={Link} to="/map">Map</Nav.Link>
-            <Nav.Link as={Link} to="/upload">Upload</Nav.Link>
-            <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
+            {user && (
+              <>
+                <Nav.Link as={Link} to="/map">Map</Nav.Link>
+                <Nav.Link as={Link} to="/upload">Upload</Nav.Link>
+                <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
+              </>
+            )}
+          </Nav>
+          <Nav className="ms-auto">
+            {user ? (
+              <>
+                <Navbar.Text className="me-3">
+                  Welcome, {user.name}!
+                </Navbar.Text>
+                <Logout 
+                  setUser={setUser} 
+                  clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID} 
+                />
+              </>
+            ) : (
+              <Login setUser={setUser} />
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

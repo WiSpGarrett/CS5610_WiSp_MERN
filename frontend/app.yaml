@@ -11,3 +11,5 @@ handlers:
     upload: build/index.html
 
 env_variables:
+  REACT_APP_API_BASE_URL: "https://api-dot-wisp-photo-gallery-map.ue.r.appspot.com"
+  REACT_APP_GOOGLE_CLIENT_ID: "953401973544-625so7abtbjpcm2e0pbm3b4r6vv422ue.apps.googleusercontent.com"

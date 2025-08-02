@@ -2,4 +2,5 @@ runtime: nodejs22
 service: api
 
 env_variables:
-  
+  NODE_ENV: production
+  MONGO_URI: "mongodb+srv://spencergarrett1997:28iyy2rZUEKay5ys@wisp.hyvahxu.mongodb.net/photo_gallery_db?retryWrites=true&w=majority&appName=WiSp"
