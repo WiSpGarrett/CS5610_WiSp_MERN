@@ -3,8 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/database.js';
 import userRoutes from './routes/users.js';
+import photoRoutes from './routes/photos.js';
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/users', userRoutes);
+app.use('/api/photos', photoRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
