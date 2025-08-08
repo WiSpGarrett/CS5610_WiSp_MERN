@@ -10,6 +10,7 @@ function Map() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
+  const [currentUserId, setCurrentUserId] = useState(null);
 
   const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -18,26 +19,20 @@ function Map() {
     googleMapsApiKey: apiKey || ''
   });
 
-  const getUserId = () => {
-    const saved = localStorage.getItem('login');
-    const user = saved ? JSON.parse(saved) : null;
-    return user?.dbId || null;
-  };
-
   useEffect(() => {
+    try {
+      const saved = localStorage.getItem('login');
+      const user = saved ? JSON.parse(saved) : null;
+      setCurrentUserId(user?.dbId || null);
+    } catch {
+      setCurrentUserId(null);
+    }
+
     const load = async () => {
       setLoading(true);
       setError(null);
       try {
-        const userId = getUserId();
-        if (!userId) {
-          setError('You must be logged in to view the map.');
-          setPhotos([]);
-          return;
-        }
-        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/photos`, {
-          params: { userId }
-        });
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/photos`);
         const list = Array.isArray(res.data?.photos) ? res.data.photos : [];
         setPhotos(list);
       } catch (e) {
@@ -55,16 +50,17 @@ function Map() {
         const lat = parseFloat(p?.location?.latitude);
         const lng = parseFloat(p?.location?.longitude);
         if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
-        return { id: p._id, lat, lng, title: p.title, url: p.gcsUrl };
+        const ownerId = typeof p.userId === 'object' && p.userId?._id ? p.userId._id : p.userId;
+        return { id: p._id, lat, lng, title: p.title, url: p.gcsUrl, isMine: currentUserId && ownerId ? String(ownerId) === String(currentUserId) : false };
       })
       .filter(Boolean);
-  }, [photos]);
+  }, [photos, currentUserId]);
 
   const mapCenter = useMemo(() => {
     if (markers.length > 0) {
       return { lat: markers[0].lat, lng: markers[0].lng };
     }
-    // Continental US fallback
+
     return { lat: 39.5, lng: -98.35 };
   }, [markers]);
 
