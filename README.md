@@ -6,6 +6,58 @@ Photo gallery web application with location mapping capabilities.
 - Frontend: [https://wisp-photo-gallery-map.ue.r.appspot.com](https://wisp-photo-gallery-map.ue.r.appspot.com)
 - Backend: [https://api-dot-wisp-photo-gallery-map.ue.r.appspot.com](https://api-dot-wisp-photo-gallery-map.ue.r.appspot.com)
 
+## Progress Summary - Iteration 2
+
+### Completed Features
+- **Photo Upload**: Drag-and-drop uploader with compression (to keep files small for free-tier).  Frontend POSTS to photos.js api/photo route.
+- **Storage Limits**: Enforced per-user upload count and storage usage (again, for staying within free tier).  Storage is tracked in user db collection, updated per photo upload/delete.
+- **Photo Deletion**: Multi-select with a single delete action, calls sequential DELETE requests.
+- **Map Integration**: Google Map markers for photo coordinates with photo preview on click.  Still need to handle scenario of multiple photos per coordinate set.
+- **UX**: Extremely basic loading, error, and empty states across pages.  Need to massively overhaul UI, no CSS implemented yet.
+
+### Issues Resolved
+- **Delete UX**: Replaced per-card delete with checkbox selection + one delete button.  Was more confusing than I expected.  Gonna swap current implementation out for batch delete function.
+- **Verifying UserID in DB**: Got tripped up by which userID or ObjectID to use when referencing photos and verifying that user should be able to delete or not.
+- **Build/Config**: Ensured Maps library works, had some dependecy conflicts.  Backend deployment got messed up at one point and API endpoints were all returning 404s even though they were technically live.
+
+### Current Status
+- Major CRUD aspects are implemented and functioning (Create, Read, Delete, no Update yet.)
+- Front end accurately displays user photo uploads, and map renders pins properly with photo cards.
+- Backend handles API requests and correctly updates DB, upload/storage limit tracking seems to be working well.
+
+### Screenshots
+
+### Frontend - Upload Page
+![Upload Page](screenshots/upload-page.png)
+*Drag and drop + file selection working well so far*
+
+### Frontend - Profile Page
+![Profile Page](screenshots/profile-page.png)
+*User profile displays their uploaded photos and allows for checkbox deletion*
+
+### Frontend - Map View  
+![Map View](screenshots/map-view.png)
+*Initial map view with pins that haven't been clicked into yet*
+
+### Frontend - Map Expanded
+![Map Expanded](screenshots/map-expanded.png)
+*Map view when a user clicks on one of the pins from a photo upload*
+
+### Backend - Photo Schema
+![Photo Schema](screenshots/photo-db.png)
+*This is the current schema for the photo collection, provides GCS link and location data*
+
+### Next Steps - Iteration 3
+- Completely overhaul visuals, full CSS needed.
+- Implement home page regardless of login status.
+- Replace `x-user-id` with JWT-based auth and server-side verification.
+- Backend batch delete endpoint for multi-delete.
+- Add address to lat/lng autocomplete from GCS API (Geocoding or Places Autocomplete).
+- Paginate photo lists for main carousel/gallery page; ensure DB indexes are good at loading.
+- More robust API error format and global handler.
+- Add test suites and explore edge cases.
+
+-----------------------------------------------------------------------------------------------------------------------------
 ## Progress Summary - Iteration 1
 
 ### Completed Features
