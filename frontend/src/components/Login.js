@@ -5,8 +5,9 @@ import axios from 'axios';
 
 function Login({ setUser }) {
   const onSuccess = async (res) => {
-    var tokenData = jwtDecode(res.credential);
-    
+    const tokenData = jwtDecode(res.credential);
+
+    let dbId = null;
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/api/users/login`,
@@ -16,17 +17,22 @@ function Login({ setUser }) {
           name: tokenData.name
         }
       );
+      dbId = response?.data?.user?.id || response?.data?.user?._id || null;
       console.log('User saved to database:', response.data);
     } catch (error) {
       console.error('Error saving user to database:', error);
     }
-    
-    var loginData = {
+
+    const loginData = {
+      dbId,
       googleId: tokenData.sub,
-      ...tokenData
+      email: tokenData.email,
+      name: tokenData.name,
+      picture: tokenData.picture,
     };
+
     setUser(loginData);
-    localStorage.setItem("login", JSON.stringify(loginData));
+    localStorage.setItem('login', JSON.stringify(loginData));
     console.log('Login Success: currentUser:', loginData);
   };
 
@@ -36,10 +42,7 @@ function Login({ setUser }) {
 
   return (
     <div>
-      <GoogleLogin
-        onSuccess={onSuccess}
-        onError={onFailure}
-      />
+      <GoogleLogin onSuccess={onSuccess} onError={onFailure} />
     </div>
   );
 }
