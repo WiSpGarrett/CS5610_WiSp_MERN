@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Card, Button, Alert, Spinner, Form } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Alert, Spinner, Form, ProgressBar } from 'react-bootstrap';
 import axios from 'axios';
 
 function Profile() {
@@ -8,6 +8,7 @@ function Profile() {
   const [error, setError] = useState(null);
   const [selectedIds, setSelectedIds] = useState(new Set());
   const [deletingSelected, setDeletingSelected] = useState(false);
+  const [usage, setUsage] = useState({ uploadCount: 0, totalStorageUsed: 0, maxUploads: 0, maxStorage: 0 });
 
   const getUserId = () => {
     const saved = localStorage.getItem('login');
@@ -25,10 +26,20 @@ function Profile() {
       return;
     }
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/photos`, {
-        params: { userId }
-      });
-      setPhotos(res.data?.photos || []);
+      const [photosRes, userRes] = await Promise.all([
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/photos`, { params: { userId } }),
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/users/me`, { headers: { 'x-user-id': userId } })
+      ]);
+      setPhotos(photosRes.data?.photos || []);
+      const u = userRes.data?.user;
+      if (u) {
+        setUsage({
+          uploadCount: u.uploadCount || 0,
+          totalStorageUsed: u.totalStorageUsed || 0,
+          maxUploads: u.maxUploads || 0,
+          maxStorage: u.maxStorage || 0
+        });
+      }
     } catch (e) {
       setError('Failed to load photos');
     } finally {
@@ -70,6 +81,18 @@ function Profile() {
 
       if (successfulIds.length > 0) {
         setPhotos((prev) => prev.filter((p) => !successfulIds.includes(p._id)));
+        try {
+          const userRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/users/me`, { headers: { 'x-user-id': userId } });
+          const u = userRes.data?.user;
+          if (u) {
+            setUsage({
+              uploadCount: u.uploadCount || 0,
+              totalStorageUsed: u.totalStorageUsed || 0,
+              maxUploads: u.maxUploads || 0,
+              maxStorage: u.maxStorage || 0
+            });
+          }
+        } catch {}
       }
       setSelectedIds(new Set());
 
@@ -85,11 +108,31 @@ function Profile() {
 
   useEffect(() => {
     loadPhotos();
+    const onUpdated = () => loadPhotos();
+    window.addEventListener('photos:updated', onUpdated);
+    return () => window.removeEventListener('photos:updated', onUpdated);
   }, []);
 
   return (
     <Container className="mt-4">
       <h1>My Photos</h1>
+
+      {/* Usage summary */}
+      <div className="mb-3">
+        <div>
+          <strong>{usage.uploadCount}</strong> / {usage.maxUploads || 0} photos uploaded
+        </div>
+        <div className="d-flex align-items-center gap-3">
+          <div>
+            <strong>{(usage.totalStorageUsed / (1024 * 1024)).toFixed(1)}</strong> / {(usage.maxStorage / (1024 * 1024)).toFixed(0)} MB used
+          </div>
+          {usage.maxStorage > 0 && (
+            <div style={{ minWidth: 200 }}>
+              <ProgressBar now={Math.min(100, (usage.totalStorageUsed / usage.maxStorage) * 100)} />
+            </div>
+          )}
+        </div>
+      </div>
 
       {error && (
         <Alert variant="danger" onClose={() => setError(null)} dismissible>

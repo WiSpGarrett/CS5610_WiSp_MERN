@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Container, Alert, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from '@react-google-maps/api';
+import { useLocation } from 'react-router-dom';
 
 const containerStyle = { width: '100%', height: '70vh' };
 
@@ -11,6 +12,7 @@ function Map() {
   const [error, setError] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
+  const location = useLocation();
 
   const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -57,14 +59,23 @@ function Map() {
   }, [photos, currentUserId]);
 
   const mapCenter = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    const qLat = parseFloat(params.get('lat'));
+    const qLng = parseFloat(params.get('lng'));
+    if (Number.isFinite(qLat) && Number.isFinite(qLng)) {
+      return { lat: qLat, lng: qLng };
+    }
     if (markers.length > 0) {
       return { lat: markers[0].lat, lng: markers[0].lng };
     }
-
     return { lat: 39.5, lng: -98.35 };
-  }, [markers]);
+  }, [markers, location.search]);
 
-  const defaultZoom = markers.length > 0 ? 6 : 4;
+  const defaultZoom = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('lat') && params.get('lng')) return 10;
+    return markers.length > 0 ? 6 : 4;
+  }, [markers, location.search]);
 
   const selected = useMemo(() => markers.find((m) => m.id === selectedId) || null, [markers, selectedId]);
 

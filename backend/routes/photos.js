@@ -91,13 +91,14 @@ router.delete('/:photoId', async (req, res) => {
   }
 });
 
-router.get('/', async (req, res) => {
+  router.get('/', async (req, res) => {
   try {
     const { userId } = req.query;
     const filter = userId ? { userId } : {};
 
-    const photos = await Photo.find(filter, 'title gcsUrl location createdAt userId')
-      .sort({ createdAt: -1 });
+      const photos = await Photo.find(filter, 'title gcsUrl location createdAt userId')
+        .sort({ createdAt: -1 })
+        .populate('userId', 'name email profilePicture');
 
     res.json({ success: true, photos });
   } catch (err) {
