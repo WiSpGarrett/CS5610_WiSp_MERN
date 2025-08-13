@@ -152,16 +152,18 @@ function Profile() {
           <Row xs={1} sm={2} md={3} lg={4} className="g-3">
             {photos.map((p) => (
               <Col key={p._id}>
-                <Card className="position-relative">
+                <Card className="position-relative profile-card">
                   <Form.Check
                     type="checkbox"
-                    className="position-absolute top-0 end-0 m-2 p-2 bg-white rounded"
+                    className="position-absolute top-0 end-0 m-2 p-2 rounded"
                     checked={selectedIds.has(p._id)}
                     onChange={() => toggleSelect(p._id)}
                     disabled={deletingSelected}
                     aria-label={`Select ${p.title}`}
                   />
-                  <Card.Img variant="top" src={p.gcsUrl} alt={p.title} />
+                  <div className="profile-card-image-wrap">
+                    <Card.Img variant="top" src={p.gcsUrl} alt={p.title} className="profile-card-image" />
+                  </div>
                   <Card.Body>
                     <Card.Title className="fs-6 text-truncate" title={p.title}>{p.title}</Card.Title>
                   </Card.Body>

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Container, Alert, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from '@react-google-maps/api';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 const containerStyle = { width: '100%', height: '70vh' };
 
@@ -101,22 +101,108 @@ function Map() {
           <span>Loading map…</span>
         </div>
       ) : (
-        <GoogleMap mapContainerStyle={containerStyle} center={mapCenter} zoom={defaultZoom}>
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={mapCenter}
+          zoom={defaultZoom}
+          options={{
+            styles: [
+              { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
+              { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
+              { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
+              {
+                featureType: "administrative.locality",
+                elementType: "labels.text.fill",
+                stylers: [{ color: "#d59563" }],
+              },
+              {
+                featureType: "poi",
+                elementType: "labels.text.fill",
+                stylers: [{ color: "#d59563" }],
+              },
+              {
+                featureType: "poi.park",
+                elementType: "geometry",
+                stylers: [{ color: "#263c3f" }],
+              },
+              {
+                featureType: "poi.park",
+                elementType: "labels.text.fill",
+                stylers: [{ color: "#6b9a76" }],
+              },
+              {
+                featureType: "road",
+                elementType: "geometry",
+                stylers: [{ color: "#38414e" }],
+              },
+              {
+                featureType: "road",
+                elementType: "geometry.stroke",
+                stylers: [{ color: "#212a37" }],
+              },
+              {
+                featureType: "road",
+                elementType: "labels.text.fill",
+                stylers: [{ color: "#9ca5b3" }],
+              },
+              {
+                featureType: "road.highway",
+                elementType: "geometry",
+                stylers: [{ color: "#746855" }],
+              },
+              {
+                featureType: "road.highway",
+                elementType: "geometry.stroke",
+                stylers: [{ color: "#1f2835" }],
+              },
+              {
+                featureType: "road.highway",
+                elementType: "labels.text.fill",
+                stylers: [{ color: "#f3d19c" }],
+              },
+              {
+                featureType: "transit",
+                elementType: "geometry",
+                stylers: [{ color: "#2f3948" }],
+              },
+              {
+                featureType: "transit.station",
+                elementType: "labels.text.fill",
+                stylers: [{ color: "#d59563" }],
+              },
+              {
+                featureType: "water",
+                elementType: "geometry",
+                stylers: [{ color: "#17263c" }],
+              },
+              {
+                featureType: "water",
+                elementType: "labels.text.fill",
+                stylers: [{ color: "#515c6d" }],
+              },
+              {
+                featureType: "water",
+                elementType: "labels.text.stroke",
+                stylers: [{ color: "#17263c" }],
+              },
+            ],
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: false
+          }}
+        >
           {markers.map((m) => (
             <Marker key={m.id} position={{ lat: m.lat, lng: m.lng }} onClick={() => setSelectedId(m.id)} />
           ))}
 
           {selected && (
             <InfoWindow position={{ lat: selected.lat, lng: selected.lng }} onCloseClick={() => setSelectedId(null)}>
-              <div style={{ maxWidth: 220 }}>
-                <div style={{ fontWeight: 600, marginBottom: 8 }} title={selected.title}>
-                  {selected.title}
+              <div className="map-info">
+                <div className="map-info-header">
+                  <div className="map-info-title" title={selected.title}>{selected.title}</div>
+                  <Link to={`/?photoId=${selected.id}`} className="btn btn-primary btn-sm">View Photo</Link>
                 </div>
-                <img
-                  src={selected.url}
-                  alt={selected.title}
-                  style={{ width: '100%', height: 'auto', borderRadius: 4 }}
-                />
+                <img src={selected.url} alt={selected.title} />
               </div>
             </InfoWindow>
           )}

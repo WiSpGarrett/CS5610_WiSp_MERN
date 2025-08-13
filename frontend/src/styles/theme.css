@@ -1,0 +1,20 @@
+:root {
+    --color-bg: #0f1115;
+    --color-surface: #171a1f;
+    --color-surface-2: #1d2230;
+    --color-border: rgba(255,255,255,0.06);
+    --color-text: #eceff4;
+    --color-text-muted: #a6abb7;
+  
+    --brand-primary: #3f5f56;
+  
+    --radius: 10px;
+    --shadow-sm: 0 4px 12px rgba(0,0,0,0.25);
+    --shadow-lg: 0 10px 26px rgba(0,0,0,0.30);
+  
+    --font-sans: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    --font-size-base: 16px;
+  }
+
+
+

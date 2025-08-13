@@ -25,12 +25,18 @@ function Upload() {
   });
 
   const dropzoneStyle = useMemo(() => ({
-    border: '2px dashed #888',
-    borderRadius: 8,
-    padding: '30px',
+    border: '2px dashed var(--color-border)',
+    borderRadius: '12px',
+    padding: '40px',
+    minHeight: '360px',
     textAlign: 'center',
-    background: isDragActive ? '#f0f8ff' : '#fafafa',
-    cursor: 'pointer'
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: isDragActive ? 'rgba(255,255,255,0.05)' : 'var(--color-surface)',
+    cursor: 'pointer',
+    color: 'var(--color-text)',
+    fontSize: '1.1rem'
   }), [isDragActive]);
 
   const handleSubmit = async (e) => {

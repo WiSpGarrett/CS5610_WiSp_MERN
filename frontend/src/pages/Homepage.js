@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Alert, Spinner, Carousel, Row, Col, Image, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
 function Homepage() {
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     const load = async () => {
@@ -23,6 +25,14 @@ function Homepage() {
     };
     load();
   }, []);
+
+  useEffect(() => {
+    if (!photos || photos.length === 0) return;
+    const targetId = searchParams.get('photoId');
+    if (!targetId) return;
+    const idx = photos.findIndex((p) => p._id === targetId);
+    if (idx >= 0) setActiveIndex(idx);
+  }, [photos, searchParams]);
 
   return (
     <Container className="mt-4">
@@ -42,18 +52,28 @@ function Homepage() {
       ) : photos.length === 0 ? (
         <p>No photos yet.</p>
       ) : (
-        <Carousel interval={null} indicators={false} variant="dark">
+        <Carousel
+          interval={null}
+          indicators={false}
+          variant="dark"
+          className="homepage-carousel"
+          activeIndex={activeIndex}
+          onSelect={(idx) => setActiveIndex(idx)}
+        >
           {photos.map((p) => {
             const owner = p.userId && typeof p.userId === 'object' ? p.userId : null;
             const lat = p?.location?.latitude;
             const lng = p?.location?.longitude;
             return (
               <Carousel.Item key={p._id}>
-                <Row className="align-items-center">
+                <Row className="align-items-stretch">
                   <Col md={8} className="mb-3 mb-md-0">
-                    <Image src={p.gcsUrl} alt={p.title} fluid rounded />
+                    <div className="carousel-image-wrap">
+                      <Image src={p.gcsUrl} alt={p.title} className="carousel-image" />
+                    </div>
                   </Col>
-                  <Col md={4}>
+                  <Col md={4} className="d-flex">
+                    <div className="carousel-meta surface w-100">
                     <h3 className="mb-2" title={p.title}>{p.title}</h3>
                     {owner && (
                       <div className="mb-2">
@@ -84,6 +104,7 @@ function Homepage() {
                     </div>
                     <div className="text-muted" style={{ fontSize: '0.9rem' }}>
                       Taken: {new Date(p.createdAt).toLocaleString()}
+                    </div>
                     </div>
                   </Col>
                 </Row>

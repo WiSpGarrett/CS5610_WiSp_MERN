@@ -1,0 +1,155 @@
+html, body, #root { min-height: 100%; }
+body {
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(255,255,255,.06), transparent),
+    radial-gradient(900px 500px at -10% 30%, rgba(255,255,255,.04), transparent),
+    var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.card {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.navbar {
+  background-color: rgba(23,26,31, 0.75) !important;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-lg);
+}
+.navbar .nav-link,
+.navbar .navbar-brand { color: var(--color-text) !important; }
+.navbar .nav-link.active { color: var(--brand-primary) !important; }
+
+.btn-primary {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+  border-radius: var(--radius);
+  box-shadow: none;
+}
+.btn-primary:hover { filter: brightness(1.05); }
+.btn-outline-danger { border-radius: var(--radius); }
+
+.form-control, .form-select {
+  background-color: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  border-radius: var(--radius);
+}
+.form-control::placeholder { color: var(--color-text-muted); }
+
+.carousel-control-prev, .carousel-control-next {
+  width: 8%;
+}
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  filter: invert(90%) opacity(0.9);
+}
+
+.text-muted { color: var(--color-text-muted) !important; }
+
+.homepage-carousel .carousel-item {
+  min-height: 460px;
+}
+.homepage-carousel { overflow: visible; }
+.homepage-carousel .carousel-inner { overflow: visible; }
+.carousel-image-wrap {
+  height: 460px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.homepage-carousel .carousel-control-prev-icon,
+.homepage-carousel .carousel-control-next-icon {
+  filter: invert(90%) opacity(0.9);
+}
+.homepage-carousel .carousel-control-prev,
+.homepage-carousel .carousel-control-next {
+  width: 3rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.homepage-carousel .carousel-control-prev { left: -34px; }
+.homepage-carousel .carousel-control-next { right: -34px; }
+
+@media (max-width: 768px) {
+  .homepage-carousel .carousel-control-prev,
+  .homepage-carousel .carousel-control-next {
+    width: 12%;
+  }
+  .homepage-carousel .carousel-control-prev { left: 0; }
+  .homepage-carousel .carousel-control-next { right: 0; }
+}
+.carousel-meta {
+  border-radius: var(--radius);
+  padding: 24px;
+}
+.carousel-meta h3 { font-size: 2rem; }
+.carousel-meta div { font-size: 1.5rem; }
+
+.profile-card .profile-card-image-wrap {
+  height: 220px;
+  overflow: hidden;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+.profile-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gm-style .gm-style-iw-c {
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius);
+  padding: 2px 10px 10px 10px !important; 
+}
+.gm-style .gm-style-iw-d { overflow: hidden !important; }
+.gm-style .gm-ui-hover-effect { 
+    filter: invert(85%);
+}
+
+.map-info { max-width: 260px; }
+.map-info-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.1;
+  margin: 0px 28px 10px 0;
+  color: var(--color-text);
+}
+.map-info img { width: 100%; height: auto; border-radius: 6px; display: block; }
+
+.map-info-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.map-info-header .btn {
+  padding: 5px 8px;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  border-radius: 6px;
+}
+
+.surface { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); }
+.container-narrow { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
