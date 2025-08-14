@@ -7,7 +7,7 @@ import { useLocation, Link } from 'react-router-dom';
 // Container size for the map canvas
 const containerStyle = { width: '100%', height: '70vh' };
 
-function Map() {
+function Map({ user }) {
   // App state with fetched photos, UI flags, selected marker, and current user.
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -93,6 +93,12 @@ function Map() {
     <Container className="mt-4">
       <h1>Map View</h1>
 
+      {!user && (
+        <Alert variant="warning">
+          Please log in to enable map view, photo uploads and profile management.
+        </Alert>
+      )}
+
       {error && (
         <Alert variant="danger" onClose={() => setError(null)} dismissible>
           {error}
@@ -105,7 +111,7 @@ function Map() {
         </Alert>
       )}
 
-      {loading || !isLoaded ? (
+      {!user ? null : loading || !isLoaded ? (
         <div className="d-flex align-items-center gap-2 mt-3">
           <Spinner animation="border" size="sm" />
           <span>Loading map…</span>

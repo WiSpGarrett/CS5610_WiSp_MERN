@@ -34,7 +34,10 @@ function Navigation({ user, setUser }) {
                 />
               </>
             ) : (
-              <Login setUser={setUser} />
+              <>
+                <Navbar.Text className="me-3">Log in for full features</Navbar.Text>
+                <Login setUser={setUser} />
+              </>
             )}
           </Nav>
         </Navbar.Collapse>
