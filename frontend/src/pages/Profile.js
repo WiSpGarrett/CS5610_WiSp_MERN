@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Button, Alert, Spinner, Form, ProgressBar } 
 import axios from 'axios';
 
 function Profile() {
+  // User-owned photos, UI flags, selection state, and usage summary.
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,12 +11,14 @@ function Profile() {
   const [deletingSelected, setDeletingSelected] = useState(false);
   const [usage, setUsage] = useState({ uploadCount: 0, totalStorageUsed: 0, maxUploads: 0, maxStorage: 0 });
 
+  // Read current user's database id from local storage.
   const getUserId = () => {
     const saved = localStorage.getItem('login');
     const user = saved ? JSON.parse(saved) : null;
     return user?.dbId || null;
   };
 
+  // Fetch user's photos and usage summary from the API
   const loadPhotos = async () => {
     setLoading(true);
     setError(null);
@@ -47,6 +50,7 @@ function Profile() {
     }
   };
 
+  // Toggle selection for bulk delete.
   const toggleSelect = (photoId) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
@@ -56,6 +60,7 @@ function Profile() {
     });
   };
 
+  // Bulk delete selected photo(s).
   const handleDeleteSelected = async () => {
     const userId = getUserId();
     if (!userId) {
@@ -81,6 +86,7 @@ function Profile() {
 
       if (successfulIds.length > 0) {
         setPhotos((prev) => prev.filter((p) => !successfulIds.includes(p._id)));
+        // Refresh usage after deletion to reflect freed storage and count.
         try {
           const userRes = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/users/me`, { headers: { 'x-user-id': userId } });
           const u = userRes.data?.user;

@@ -5,6 +5,7 @@ import Login from './Login';
 import Logout from './Logout';
 
 function Navigation({ user, setUser }) {
+  // Top navigation with conditional links based on auth state.
   return (
     <Navbar bg="light" expand="lg">
       <Container>

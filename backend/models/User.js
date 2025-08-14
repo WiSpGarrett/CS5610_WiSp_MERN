@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+// DB schema for user collection, contains metadata for each user.
 const userSchema = new mongoose.Schema({
   googleId: {
     type: String,
@@ -39,6 +40,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
+// Indexes for common queries.
 userSchema.index({ googleId: 1 });
 userSchema.index({ email: 1 });
 

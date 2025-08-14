@@ -5,13 +5,15 @@ import { uploadBufferToGCS, deleteFileFromGCS } from '../config/storage.js';
 import Photo from '../models/Photo.js';
 import User from '../models/User.js';
 
+// Read uploads into memory and process with Sharp before storing in GCS.
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 }
+  limits: { fileSize: 30 * 1024 * 1024 } // 30MB limit
 });
 
 const router = express.Router();
 
+// Create: multipart form with field "photo" plus title/latitude/longitude.
 router.post('/', upload.single('photo'), async (req, res) => {
   try {
     if (!req.file) {
@@ -20,6 +22,7 @@ router.post('/', upload.single('photo'), async (req, res) => {
 
     const { title = '', latitude, longitude } = req.body;
 
+    // User id is provided via header.
     const userId = req.headers['x-user-id'];
     if (!userId) return res.status(401).json({ success:false, message:'Missing x-user-id header'});
 
@@ -33,6 +36,7 @@ router.post('/', upload.single('photo'), async (req, res) => {
       return res.status(413).json({ success:false, message:'Storage limit reached' });
     }
 
+    // Compress and resize to keep storage/bandwidth in free-tier for my GCS account.
     const compressed = await sharp(req.file.buffer)
       .resize({ width: 1280, withoutEnlargement: true })
       .jpeg({ quality: 70 })
@@ -61,6 +65,7 @@ router.post('/', upload.single('photo'), async (req, res) => {
   }
 });
 
+// Delete functionality, only the owner can delete their own photo.
 router.delete('/:photoId', async (req, res) => {
   try {
     const userId = req.headers['x-user-id'];
@@ -91,6 +96,7 @@ router.delete('/:photoId', async (req, res) => {
   }
 });
 
+// List photos and optionally filter by userId.
   router.get('/', async (req, res) => {
   try {
     const { userId } = req.query;

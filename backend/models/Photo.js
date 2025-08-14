@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+// DB schema for photo collection, contains metadata for each photo.
 const photoSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -43,6 +44,7 @@ const photoSchema = new mongoose.Schema({
   timestamps: true
 });
 
+// Indexes for common queries.
 photoSchema.index({ userId: 1 });
 photoSchema.index({ 'location.latitude': 1, 'location.longitude': 1 });
 photoSchema.index({ createdAt: -1 });

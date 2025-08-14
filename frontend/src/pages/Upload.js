@@ -4,6 +4,7 @@ import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 
 function Upload() {
+  // Local form state
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState('');
   const [latitude, setLatitude] = useState('');
@@ -11,6 +12,7 @@ function Upload() {
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState(null);
 
+  // Handle file selection via drag-and-drop.
   const onDrop = useCallback((acceptedFiles) => {
     if (acceptedFiles && acceptedFiles.length > 0) {
       setFile(acceptedFiles[0]);
@@ -24,6 +26,7 @@ function Upload() {
     maxFiles: 1,
   });
 
+  // Themed dropzone styling.
   const dropzoneStyle = useMemo(() => ({
     border: '2px dashed var(--color-border)',
     borderRadius: '12px',
@@ -39,6 +42,7 @@ function Upload() {
     fontSize: '1.1rem'
   }), [isDragActive]);
 
+  // Submit the form to the backend as multipart/form-data.
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage(null);

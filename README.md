@@ -6,6 +6,37 @@ Photo gallery web application with location mapping capabilities.
 - Frontend: [https://wisp-photo-gallery-map.ue.r.appspot.com](https://wisp-photo-gallery-map.ue.r.appspot.com)
 - Backend: [https://api-dot-wisp-photo-gallery-map.ue.r.appspot.com](https://api-dot-wisp-photo-gallery-map.ue.r.appspot.com)
 
+----------------------------------------------------------------------------------------------
+## Progess Summary - Iteration 3
+
+### Completed Features
+- **CSS Overhaul**: Overwrote some of the Bootstrap components with CSS for better uniformity between cards/containers like the map pin info cards and the carousel/gallery.  Added global styling for overall dark mode theme throughout the site.
+- **Map Pin Links**: Added a feature for map pins to link back to the corresponding photo within the carousel so user can view photo metadata, uses index and photo ID in URL to land on the right photo.
+- **Map Styling**: Used Javascript documentation from Google Maps to style the map as a night-mode type version so that it fits better with the website theme.
+
+### Issues Resolved
+- **Long/Lat - Address Conversion**: Tried a feature that allowed user to type in an address/town/zip and pull long/lat from that, but it had a vague pricing model for the Google Maps Places API so I ended up not using it to avoid any charges.
+- **Client Side vs Server Side Auth**: Originally planned to replace x-user-id with actual server side authentication rather than just trusting the user id, but issues with Google Cloud led me back to just using the client side user id since it works well enough for demo purposes.
+
+### Screenshots
+
+![Homepage Carousel](screenshots/carousel.png)
+*Fixed formatting for photo cards and metadata cards so they line up better and are uniform*
+
+![Map Styling](screenshots/map-style.png)
+*Changed Google Maps style to fit dark mode theme for website*
+
+![Map Pin Cards](screenshots/map-cards.png)
+*Added 'View Photo' button to map pin cards so user can navigate to the photo in carousel*
+
+![Upload Format](screenshots/upload-style.png)
+*Basic styling for upload page to match site theme and expanded DnD zone*
+
+![Profile Format](screenshots/profile-style.png)
+*Made profile photo cards uniform and cleaned up the checkboxes so they are more subtle*
+
+----------------------------------------------------------------------------------------------
+
 ## Progress Summary - Iteration 2
 
 ### Completed Features

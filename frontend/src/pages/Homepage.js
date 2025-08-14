@@ -4,12 +4,14 @@ import { Link, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
 function Homepage() {
+  // Photo list for the carousel, loading/error states, and an index for map linking.
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [searchParams] = useSearchParams();
 
+  // Fetch all photos for the homepage carousel.
   useEffect(() => {
     const load = async () => {
       setLoading(true);
@@ -26,6 +28,7 @@ function Homepage() {
     load();
   }, []);
 
+  // Link support for jumping to a specific photo in the carousel.
   useEffect(() => {
     if (!photos || photos.length === 0) return;
     const targetId = searchParams.get('photoId');

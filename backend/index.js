@@ -10,6 +10,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// JSON body parsing and CORS for the frontend.
 app.use(express.json());
 app.use(cors());
 
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
   });
 });
 
+// Routing groups.
 app.use('/api/users', userRoutes);
 app.use('/api/photos', photoRoutes);
 

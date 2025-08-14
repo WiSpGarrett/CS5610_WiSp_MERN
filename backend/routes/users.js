@@ -3,6 +3,7 @@ import User from '../models/User.js';
 
 const router = express.Router();
 
+// Handles Google login and inserts user into DB if they don't exist.
 router.post('/login', async (req, res) => {
   try {
     const { googleId, email, name } = req.body;
@@ -40,6 +41,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Current user usage summary for profile page (requires user id in header).
 router.get('/me', async (req, res) => {
   try {
     const userId = req.headers['x-user-id'];

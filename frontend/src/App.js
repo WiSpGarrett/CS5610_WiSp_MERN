@@ -8,6 +8,7 @@ import Upload from './pages/Upload';
 import Profile from './pages/Profile';
 
 function App() {
+  // Persist minimal user info.
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -18,6 +19,7 @@ function App() {
   }, []);
 
   return (
+    // Provide Google OAuth info and set up routing.
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
       <Router>
         <div className="App">
